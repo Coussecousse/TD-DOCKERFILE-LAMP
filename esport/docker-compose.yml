@@ -1,0 +1,41 @@
+networks: 
+  esport:
+services: 
+  frontend: 
+    image: php:8.1-apache
+    build: ./esport-front
+    ports: 
+      - "8080:80"
+    networks: 
+      - esport
+    depends_on:
+      - api
+
+  
+  mongo:
+    image: mongo:latest
+    ports: 
+      - "27017:27017"
+    networks:
+      - esport
+    volumes:
+      - mongo_data:/data/db
+
+  api:
+    image: node:latest
+    build: ./esport-api
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/esports
+    ports: 
+      - "3000:3000"
+    networks:
+      - esport
+    depends_on:
+      - mongo
+    command:
+      - npm
+      - start
+
+
+volumes: 
+  mongo_data:

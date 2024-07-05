@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: mysql-biblio
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: library
+    networks:
+      - biblio-network
+    ports:
+      - "3306:3306"
+
+  biblio-app:
+    image: php:7.4-apache
+    container_name: biblio-app
+    depends_on:
+      - mysql
+    ports:
+      - "8082:80"
+    networks:
+      - biblio-network
+    volumes:
+      - .:/var/www/html/
+    command: /bin/bash -c "docker-php-ext-install mysqli && apache2-foreground"
+
+networks:
+  biblio-network:

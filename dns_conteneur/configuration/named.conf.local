@@ -1,0 +1,10 @@
+zone "esport.docker" {
+    type master;
+    file "/etc/bind/zones/db.esport.docker";
+};
+
+zone "biblio.docker" {
+    type master;
+    file "/etc/bind/zones/db.biblio.docker";
+};
+
